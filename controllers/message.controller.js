@@ -30,3 +30,28 @@ export const getUsersFroSidebar = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+// GET: all message for selected user
+export const getMessage = async (req, res) => {
+  try {
+    const { id: selectedUserId } = req.params;
+    const myId = req.user._id;
+
+    const message = await MessageModel.find({
+      $or: [
+        { senderId: myId, receiverId: selectedUserId },
+        { senderId: selectedUserId, receiverId: myId },
+      ],
+    });
+
+    await MessageModel.updateMany(
+      { senderId: selectedUserId, receiverId: myId },
+      { seen: true }
+    );
+
+    res.json({ success: true, message });
+  } catch (error) {
+    console.error(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
