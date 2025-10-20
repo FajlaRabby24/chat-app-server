@@ -3,8 +3,8 @@ import {
   getMessage,
   getUsersFroSidebar,
   markMessageAsSeen,
-} from "../controllers/message.controller";
-import { protectRoute } from "../middleware/auth";
+} from "../controllers/message.controller.js";
+import { protectRoute } from "../middleware/auth.js";
 
 const messageRouter = express.Router();
 

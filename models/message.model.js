@@ -1,4 +1,4 @@
-import { model, models, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const MessageSchema = new Schema(
   {
@@ -13,6 +13,7 @@ const MessageSchema = new Schema(
   }
 );
 
-const MessageModel = models.Message || model("Message", MessageSchema);
+const MessageModel =
+  mongoose.models.Message || mongoose.model("Message", MessageSchema);
 
 export default MessageModel;
