@@ -3,6 +3,7 @@ import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import { connectDB } from "./lib/db.js";
+import messageRouter from "./routes/messageRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 const PORT = process.env.PORT || 5000;
 
@@ -21,6 +22,7 @@ app.use("/", (req, res) => {
 
 // auth route
 app.use("/api/auth", userRouter);
+app.use("/api/message", messageRouter);
 
 // ----- connect db -------
 const startServer = async () => {
