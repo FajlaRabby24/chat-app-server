@@ -20,7 +20,6 @@ app.use("/", (req, res) => {
   res.send("quickChat server is running");
 });
 
-// auth route
 app.use("/api/auth", userRouter);
 app.use("/api/message", messageRouter);
 
