@@ -2,6 +2,7 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
+import { Server } from "socket.io";
 import { connectDB } from "./lib/db.js";
 import messageRouter from "./routes/messageRoutes.js";
 import userRouter from "./routes/userRoutes.js";
@@ -14,6 +15,34 @@ const server = createServer(app);
 // middleware
 app.use(express.json({ limit: "4mb" }));
 app.use(cors());
+
+// intialize socket.io server
+export const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+// store online users
+export const userSocketMap = {}; // {userId: socketId}
+
+// socket.io connection handler
+io.on("connection", (socket) => {
+  const userId = socket.handshake.query.userId;
+  console.log("user connected", userId);
+
+  if (userId) userSocketMap[userId] = socket.id;
+  console.log("socket id", socket.id);
+
+  // Emit online users to al connected clients
+  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected", userId);
+    delete userSocketMap[userId];
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  });
+});
 
 // ------- routes ------------
 app.use("/", (req, res) => {
