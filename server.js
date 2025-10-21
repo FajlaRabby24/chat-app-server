@@ -38,24 +38,24 @@ io.on("connection", (socket) => {
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
-    console.log("user disconnected", userId);
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 });
 
 // ------- routes ------------
-app.use("/", (req, res) => {
-  res.send("quickChat server is running");
-});
 
 app.use("/api/auth", userRouter);
 app.use("/api/message", messageRouter);
 
+app.use("/", (req, res) => {
+  res.send("quickChat server is running");
+});
+
 // ----- connect db -------
 const startServer = async () => {
   await connectDB();
-  server.listen(5000, () => console.log(`server is running on port - ${PORT}`));
+  server.listen(PORT, () => console.log(`server is running on port - ${PORT}`));
 };
 
 startServer();
