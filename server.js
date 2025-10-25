@@ -29,10 +29,8 @@ export const userSocketMap = {}; // {userId: socketId}
 // socket.io connection handler
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
-  console.log("user connected", userId);
 
   if (userId) userSocketMap[userId] = socket.id;
-  console.log("socket id", socket.id);
 
   // Emit online users to al connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
