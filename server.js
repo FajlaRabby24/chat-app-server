@@ -56,4 +56,9 @@ const startServer = async () => {
   server.listen(PORT, () => console.log(`server is running on port - ${PORT}`));
 };
 
-startServer();
+if (process.env.NODE_ENV !== "production") {
+  startServer();
+}
+
+// export server for vercel
+export default server;
