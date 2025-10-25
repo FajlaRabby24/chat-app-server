@@ -51,8 +51,8 @@ app.use("/", (req, res) => {
 });
 
 // ----- connect db -------
+await connectDB();
 const startServer = async () => {
-  await connectDB();
   server.listen(PORT, () => console.log(`server is running on port - ${PORT}`));
 };
 
